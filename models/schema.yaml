@@ -6,7 +6,44 @@ sources:
     tables:
       - name: sales
         identifier: raw_gz_sales
+        description: sales of Greenweez / we have on row per product_id found in each orders_id
+        columns: 
+          - name: date_date
+            description: date of the sale
+          - name: orders_id
+            description: identifier of an order
+          - name: products_id
+            description: identifier of a product
+          - name: revenue
+            description: how much did GZ get from the sales of that product
+          - name: quantity
+            description: the quantity of this product sold
+        tests:
+          - unique:
+              column_name: "concat(orders_id,pdt_id)"
       - name: product
         identifier: raw_gz_product
+        description: products of Greenweez / a row represents a product_id and its purchase_price
+        columns: 
+          - name: products_id
+            description: identifier of a product
+            tests:
+              - not_null
+              - unique
+          - name: purchase_price
+            description: the price at which a product was purchased
       - name: ship
         identifier: raw_gz_ship
+        description: each row represents the delivery costs of an order_id
+        columns: 
+          - name: orders_id
+            description: identifier of an order
+            tests:
+              - not_null
+              - unique
+          - name: shipping_fee
+            description: the cost charged for shipping a product to the customer
+          - name: log_cost
+            description: the total cost associated with logistics operations
+          - name: ship_cost
+            description: the actual cost incurred by the company for shipping a product
